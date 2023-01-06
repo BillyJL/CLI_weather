@@ -17,6 +17,21 @@ const saveToken = async (token) => {
 	}
 }
 
+const getForcast = async () => {
+	try {
+		const weather = await getWeather('fgbd');
+		console.log(weather);
+	} catch (e) {
+		if (e?.response?.status === 404) {
+			printError('The city is entered incorrectly');
+		} else if (e?.response?.status === 401) {
+			printError('The token is entered incorrectly');
+		} else {
+			printError(e.message);
+		}
+	}
+}
+
 const initCLI = () => {
 	const args = getArgs(process.argv);
 	if (args.h) {
@@ -28,8 +43,7 @@ const initCLI = () => {
 	if (args.t) {
 		return saveToken(args.t)
 	}
-	getWeather('netishyn');
-	// output weather report
+	getForcast();
 };
 
 initCLI();
